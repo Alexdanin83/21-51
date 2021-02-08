@@ -5,6 +5,7 @@ app.use(express.json());
 const testimonials = require('./routes/testimonials.router');
 const concerts = require('./routes/concerts.router');
 const seats = require('./routes/seats.router');
+
 app.use('/api', testimonials);
 app.use('/api', concerts);
 app.use('/api', seats);
