@@ -23,9 +23,14 @@ router.route('/seats/:id').get((req, res) => {
   }
 });
 router.route('/seats').post((req, res) => {
-    //db.product.push(JSON.stringify(req.body))
+//sprawdzamy czy w tablicy mamy już zajęte
+  if (!( db.seats.some(number => (number.seat === req.body.seat && number.day === req.body.day)))) {
+    console.log(req.body.seat);
     db.seats.push(req.body)
-      res.json({ message: 'OK' });
+    res.json({ message: 'OK' });
+  }
+else
+  res.json({ message: 'The slot is already taken...' });
   /*
 postman-> body->raw-> json
   {
