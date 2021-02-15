@@ -24,10 +24,21 @@ router.route('/seats/:id').get((req, res) => {
 });
 router.route('/seats').post((req, res) => {
 //sprawdzamy czy w tablicy mamy już zajęte
+
   if (!( db.seats.some(number => (number.seat === req.body.seat && number.day === req.body.day)))) {
     console.log(req.body.seat);
-    db.seats.push(req.body)
+    db.seats.push({
+    id: db.seats.length+1,
+    day: req.body.day,
+    seat: req.body.seat,
+    client: req.body.client,
+    email: req.body.email }
+    );
+    //db.seats.push(req.body)
     res.json({ message: 'OK' });
+    //  socket.emit('updateData', tasks);
+    console.log(db.seats);
+     req.io.emit('seatsUpdated', db.seats);
   }
 else
   res.json({ message: 'The slot is already taken...' });

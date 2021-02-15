@@ -4,7 +4,7 @@ import { API_URL } from '../config';
 /* SELECTORS */
 export const getSeats = ({ seats }) => seats.data;
 export const getRequests = ({ seats }) => seats.requests;
-
+export const getCountSeats = ({ seats }, chosenDay) => seats.data.filter(seat => seat.day === chosenDay).length;
 /* ACTIONS */
 
 // action name creator
@@ -34,7 +34,7 @@ export const loadSeatsRequest = () => {
     try {
 
       let res = await axios.get(`${API_URL}/seats`);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+  //    await new Promise((resolve) => setTimeout(resolve, 2000));
       dispatch(loadSeats(res.data));
       dispatch(endRequest({ name: 'LOAD_SEATS' }));
 
@@ -52,7 +52,7 @@ export const addSeatRequest = (seat) => {
     try {
 
       let res = await axios.post(`${API_URL}/seats`, seat);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    //  await new Promise((resolve) => setTimeout(resolve, 1000));
       dispatch(addSeat(res));
       dispatch(endRequest({ name: 'ADD_SEAT' }));
 
@@ -74,9 +74,9 @@ const initialState = {
 
 export default function reducer(statePart = initialState, action = {}) {
   switch (action.type) {
-    case LOAD_SEATS: 
+    case LOAD_SEATS:
       return { ...statePart, data: [...action.payload] };
-    case ADD_SEAT: 
+    case ADD_SEAT:
       return { ...statePart, data: [...statePart.data, action.payload] }
     case START_REQUEST:
       return { ...statePart, requests: {...statePart.requests, [action.payload.name]: { pending: true, error: null, success: false }} };
